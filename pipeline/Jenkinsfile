@@ -80,7 +80,7 @@ pipeline {
       
         stage("Deployment AYBS Web"){
             when {
-                branch 'release/aybs_web*'
+                branch 'master'
             }
             steps {
                 script {
