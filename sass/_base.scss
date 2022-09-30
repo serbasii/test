@@ -1,0 +1,87 @@
+// COLOR VARIABLES
+$color-primary: #465968;
+$color-primary-dark: #463859;
+
+$color-secondary: #ae2418;
+
+$color-grey-light-1: #f2f2f2;
+$color-grey-light-2: #cdc7d9;
+
+$color-grey-dark-1: #999999;
+$color-grey-dark-2: #3d3d3d;
+
+$color-blue-header: #18345e;
+$color-bus-item-no: #1074bc;
+$color-bus-item: #3e3e3f;
+
+// FONT VARIABLES
+$font-primary: "Roboto", sans-serif;
+$font-display: "Josefin Sans", sans-serif;
+
+// RESPONSIVE BREAKPOINTS
+$bp-largest: 75em; // 1200px
+$bp-large: 62.5em; // 1000px
+$bp-medium: 50em; // 800px;
+$bp-small: 37.5em; // 600px;
+
+
+@mixin font-face($name, $path) {
+  @font-face {
+    font-family: $name;
+    src: url($path);
+  }
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; // 10px/16px = 62.5% -> 1rem = 10px
+
+  @media only screen and (max-width: $bp-largest) {
+    font-size: 50%;
+  }
+}
+
+@include font-face("roboto-condensed-regular", "../assets/fonts/ROBOTOCONDENSED-REGULAR.TTF");
+@include font-face("roboto-condensed-bold", "../assets/fonts/ROBOTOCONDENSED-BOLD.TTF");
+@include font-face("roboto-condensed-light", "../assets/fonts/ROBOTOCONDENSED-LIGHT.TTF");
+
+body {
+  font-family: "roboto-condensed-regular";
+  color: $color-grey-dark-2;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 14rem 1fr 14rem;
+  grid-template-columns: 1.5fr 6fr;
+  height: 100vh;
+  overflow: hidden;
+
+  @media only screen and (max-width: $bp-large) {
+    // grid-template-rows: 6rem 80vh min-content 40vw repeat(3, min-content);
+    // grid-template-columns:
+    //   [full-start] minmax(6rem, 1fr) [center-start] repeat(
+    //     8,
+    //     [col-start] minmax(min-content, 14rem) [col-end]
+    //   )
+    //   [center-end] minmax(6rem, 1fr) [full-end];
+  }
+
+  @media only screen and (max-width: $bp-medium) {
+    // grid-template-rows: 6rem calc(100vh - 6rem);
+  }
+}
+#playBtn {
+  width: 0;
+  height: 0;
+}

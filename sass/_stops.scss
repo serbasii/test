@@ -1,0 +1,121 @@
+.stops {
+  padding: 4rem 1rem;
+  grid-row: 2/3;
+  grid-column: 1/2;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-right: 2px solid $color-primary;
+  max-height: 800px;
+  width: 800px;
+  &__excess {
+    position: absolute;
+    bottom: -4rem;
+    width: 100%;
+    padding-left: 5rem;
+    justify-content: flex-start;
+    svg {
+      fill: $color-secondary;
+      width: 2.3rem;
+      height: 16rem;
+    }
+  }
+  &__top {
+    padding-left: 5rem;
+    &__image {
+      svg {
+        width: 4rem;
+        height: 5rem;
+        fill: $color-blue-header;
+      }
+    }
+  }
+  &__list {
+    padding-left: 5rem;
+    flex: 1;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  h3 {
+    color: $color-primary-dark;
+    font-size: 2rem;
+    text-align: left;
+    margin-left: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stop {
+    // padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    max-height: 16.6%;
+    padding-bottom: 1rem;
+    margin: auto 0;
+    // cursor: pointer;
+    // &:hover {
+    //   background-color: $color-grey-light-2;
+    // }
+    &__name {
+      margin-left: 1.5rem;
+      flex: 1;
+      text-align: left;
+      margin-left: 5rem;
+      font-size: 3.5rem;
+      font-family: "roboto-condensed-regular";
+      line-height: normal;
+      color: $color-primary;
+    }
+    &__image {
+      height: 96px;
+      margin-left: -14rem;
+      margin-right: -14rem;
+      svg {
+        height: 12.3rem;
+        fill: $color-blue-header;
+      }
+    }
+
+    &__top {
+      &__image {
+        img {
+          width: 2rem;
+          height: 5rem;
+        }
+      }
+    }
+  }
+}
+.stop_point {
+  width: 2.8rem;
+  margin-right: -4rem;
+  margin-left: -0.45rem;
+  z-index: 999;
+}
+
+.long_chevron {
+  width: 20px;
+  position: absolute;
+  display: flex;
+  margin-left: 5rem;
+  margin-top: 6rem;
+  height: 650px;
+}
+.blink {
+  animation: blink-animation 1s steps(1, start) infinite;
+  -webkit-animation: blink-animation 2s steps(3, start) infinite;
+  position: relative;
+  top: -4px;
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}

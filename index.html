@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--<base href="http://localhost:9696/" target="_blank">-->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="icon" href="assets/images/favicon.ico" />
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
+        font-src 'self' data: localhost:9696;
+        script-src-elem 'self' data: localhost:9696;
+        img-src 'self' data: localhost:9696;
+        style-src-elem 'self' data: localhost:9696;
+    "> -->
+    <title>Otobus Ekran</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/leaflet.css" />
+  </head>
+
+  <body>
+    <div class="loading">
+      <img src="./assets/images/loader.gif" alt="" />
+    </div>
+
+    <nav class="main" onmouseover="arrowShow()" onmouseout="arrowHide()">
+      <div class="menu">
+        <div class="select">
+          <input list="plate-select" id="select-search" placeholder=" Select Plate" />
+          <datalist id="plate-select">
+            <option class=""></option>
+          </datalist>
+          </div>
+        </select>
+
+        <button class="btn btn-hover" onclick="WatchBus()">
+          Watch<span></span><span></span><span></span><span></span>
+        </button>
+        <button class="btn btn-hover" onclick="clearStorage()">
+          Clear<span></span><span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <div class="arrow" onclick="menuShow()">
+        <div class="arrow-top"></div>
+        <div class="arrow-bottom"></div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <header class="header">
+        <div class="header__line-no">
+          <img src="./assets/lineBG.png" class="header__BG" />
+          <h1 id="route_no"></h1>
+        </div>
+        <div class="header__current">
+          <div class="header__current__stop" id="route_name">
+            Yolcu Bilgilendirme Sistemi
+          </div>
+        </div>
+
+        <div class="header__widgets">
+          <div class="weather" id="weather">
+            <div class="weather__box" id="weather__box">
+              <!--   <img src="assets/weather/01d.png" class="weather__icon" alt="" /> -->
+            </div>
+            <div class="weather__text" id="weather__text"></div>
+          </div>
+          <div class="vertical__line"></div>
+          <div class="date" id="date">
+            <div class="date__clock" id="date__clock">
+              <span class=""></span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="stops">
+        <div class="stops__top">
+          <div class="stops__top__image" style="display: none"></div>
+        </div>
+        <img src="./assets/sidebar.png" class="sidebar" />
+        <div class="stops__list" id="stop-list">
+          <div class="stop">
+            <!--  <div class="stop__image">
+              <svg>
+                <use xlink:href="images/sprite.svg#chevron"></use>
+              </svg>
+            </div>
+            <h5 class="stop__name">Borsa</h5>
+          </div>
+          <div class="stop">
+            <div class="stop__image">
+              <svg>
+                <use xlink:href="images/sprite.svg#chevron"></use>
+              </svg>
+            </div>
+            <h5 class="stop__name">Çardak</h5>
+          </div>
+          <div class="stop">
+            <div class="stop__image">
+              <svg>
+                <use xlink:href="images/sprite.svg#chevron"></use>
+              </svg>
+            </div>
+            <h5 class="stop__name">Mürsel Paşa</h5>
+          </div>
+          <div class="stop">
+            <div class="stop__image">
+              <svg>
+                <use xlink:href="images/sprite.svg#chevron"></use>
+              </svg>
+            </div>
+            <h5 class="stop__name">Çayırlıbahçe</h5> -->
+          </div>
+        </div>
+      </div>
+      <div class="map" id="mapid"></div>
+
+      <div class="footer">
+        <div class="footer__current">
+          <div class="footer__current__top">
+            <!-- <svg>
+            <use xlink:href="images/sprite.svg#circle"></use>
+          </svg> -->
+
+            <!-- <h3>Şimdiki Durak</h3> -->
+          </div>
+          <div class="footer__current__bottom">
+            <h3 id="current-stop"></h3>
+          </div>
+        </div>
+
+        <div class="footer__next">
+          <h3 id="next-stop-name"></h3>
+          <h1 id="next-stop"></h1>
+          <div class="footer__next__plate" id="plate">Test Yayını</div>
+          <p id="version"></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/sockjs.min.js"></script>
+    <script src="scripts/stomp.js"></script>
+    <script src="scripts/leaflet.js"></script>
+    <script src="scripts/movingMarker.js"></script>
+    <script src="scripts/Polyline.encoded.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/script.js"></script>
+
+    <!-- <script src="scripts/script_test.js"></script>  -->
+  </body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <style>
+      @font-face {
+        font-family: "roboto-condensed-bold";
+        src: url("../assets/fonts/ROBOTOCONDENSED-BOLD.TTF");
+      }
+      body {
+        font-family: "roboto-condensed-bold";
+      }
+
+      #test {
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        background: #db1f30;
+        top: 0;
+        left: 0;
+        margin: 0 auto;
+         display: none; 
+      }
+
+      .center {
+        color: #ffffff;
+        text-align: center !important;
+        font-size: 270px;
+        line-height: 1;
+        position: absolute;
+        top:14%;
+        /* left: 0; 
+        right: 0;
+        bottom: 0; */
+        margin: auto;
+        max-width:1920px; /* 3 */
+        max-height:920px;
+        height: auto; /* 3 */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* number of lines to show */
+        -webkit-box-orient: vertical;
+      }
+      .top {
+        position: absolute;
+        color: #cccccc;
+        font-size: 108px;
+        margin-left: 650px;
+        margin-top: 15px;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="test">
+      <div class="top">Şimdiki Durak</div>
+      <div class="center ">Karaburun Mordağan Fatma Emin Karaağaç Çok Programlı Anadolu Lisesi</div>
+    </div>
+
+    <script src="scripts/jquery.min.js"></script>
+    <!--<script>
+
+
+        $(function () {
+            $('#test').delay(10000).fadeOut();
+        });
+
+    </script>  -->
+
+    <script src="scripts/script_arr.js"></script>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+pipeline {
+    agent any
+
+    environment {
+      	DOCKER_REGISTRY = "http://prod:5000/v2"
+        PROD_USERNAME = "svrn"
+        PROD_IP = "prod"
+    }
+
+    stages {
+
+        stage("Deployment For Test"){
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "main branch"
+            }
+        }
+
+        stage("Deployment Cube XL"){
+            when {
+                branch 'release/cubexl*'
+            }
+            steps {
+                script {
+                    env.IMAGE_NAME = "ybs_cubexl"
+                    env.NGINX_PORT = "7071"
+                }
+            }
+        }
+
+        stage("Deployment Cube Penta"){
+            when {
+                branch 'release/cubepenta*'
+            }
+            steps {
+                script {
+                    env.IMAGE_NAME = "ybs_cubepenta"
+                    env.NGINX_PORT = "7072"
+                }
+            }
+        }
+
+        stage("Deployment Cube L"){
+            when {
+                branch 'release/cubel*'
+            }
+            steps {
+                script {
+                    env.IMAGE_NAME = "ybs_cubel"
+                    env.NGINX_PORT = "7073"
+                }
+            }
+        }
+
+        stage("Deployment Vision"){
+            when {
+                branch 'release/vision*'
+            }
+            steps {
+                script {
+                    env.IMAGE_NAME = "ybs_vision"
+                    env.NGINX_PORT = "7074"
+                }
+            }
+        }
+
+        stage("Deployment Double Vision"){
+            when {
+                branch 'release/doublevision*'
+            }
+            steps {
+                script {
+                    env.IMAGE_NAME = "ybs_doublevision"
+                    env.NGINX_PORT = "7075"
+                }
+            }
+        }
+      
+        stage("Deployment AYBS Web"){
+            when {
+                branch 'release/aybs_web*'
+            }
+            steps {
+                script {
+                    env.IMAGE_NAME = "ybs_aybs_web"
+                    env.NGINX_PORT = "7076"
+                }
+            }
+        }
+
+        stage("Deployment AYBS Player"){
+            when {
+                branch 'release/aybs_player*'
+            }
+            steps {
+                script {
+                    env.IMAGE_NAME = "ybs_aybs_player"
+                    env.NGINX_PORT = "7077"
+                }
+            }
+        }
+
+        stage ("Printing Environments..") {
+            steps{
+                echo "${BRANCH_NAME}"
+                echo "${IMAGE_NAME}"
+                echo "${NGINX_PORT}"
+            }
+        }
+
+        stage("Push to Private Registry") {
+            when {
+                expression {
+                    env.BRANCH_NAME.contains("release");
+                }
+            }
+            steps {
+                script {
+                    dockerImage = docker.build("${IMAGE_NAME}:${BUILD_NUMBER}", "--build-arg NGINX_PORT=${NGINX_PORT} .")
+                    docker.withRegistry("${DOCKER_REGISTRY}") {
+                    	dockerImage.push("$BUILD_NUMBER")
+                    	dockerImage.push("latest")
+                    }
+                }
+            }
+        }
+
+        stage("Deployment") {
+            when {
+                expression {
+                    env.BRANCH_NAME.contains("release");
+                }
+            }
+            steps {
+                sh "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ${PROD_USERNAME}@${PROD_IP} 'cd /home/svrn/eshot_mgmt && docker-compose up -d --build ${IMAGE_NAME}'";
+            }
+        }
+
+    }
+}
