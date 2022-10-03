@@ -3,8 +3,8 @@ pipeline {
 
     environment {
       	DOCKER_REGISTRY = "http://prod:5000/v2"
-        PROD_USERNAME = "svrn"
-        PROD_IP = "prod"
+        PROD_USERNAME = "user"
+        PROD_IP = "vlu16dc1"
     }
 
     stages {
@@ -134,7 +134,7 @@ pipeline {
                 }
             }
             steps {
-                sh "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ${PROD_USERNAME}@${PROD_IP} 'cd /home/svrn/eshot_mgmt && docker-compose up -d --build ${IMAGE_NAME}'";
+                sh "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ${PROD_USERNAME}@${PROD_IP} 'cd /opt/docker && docker-compose up -d --build ${IMAGE_NAME}'";
             }
         }
 
