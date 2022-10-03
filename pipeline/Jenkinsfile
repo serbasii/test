@@ -9,62 +9,7 @@ pipeline {
 
     stages {
 
-        stage("Deployment For Test"){
-            when {
-                branch 'main'
-            }
-            steps {
-                echo "main branch"
-            }
-        }
 
-        stage("Deployment Cube XL"){
-            when {
-                branch 'release/cubexl*'
-            }
-            steps {
-                script {
-                    env.IMAGE_NAME = "ybs_cubexl"
-                    env.NGINX_PORT = "7071"
-                }
-            }
-        }
-
-        stage("Deployment Cube Penta"){
-            when {
-                branch 'release/cubepenta*'
-            }
-            steps {
-                script {
-                    env.IMAGE_NAME = "ybs_cubepenta"
-                    env.NGINX_PORT = "7072"
-                }
-            }
-        }
-
-        stage("Deployment Cube L"){
-            when {
-                branch 'release/cubel*'
-            }
-            steps {
-                script {
-                    env.IMAGE_NAME = "ybs_cubel"
-                    env.NGINX_PORT = "7073"
-                }
-            }
-        }
-
-        stage("Deployment Vision"){
-            when {
-                branch 'release/vision*'
-            }
-            steps {
-                script {
-                    env.IMAGE_NAME = "ybs_vision"
-                    env.NGINX_PORT = "7074"
-                }
-            }
-        }
 
         stage("Deployment Double Vision"){
             when {
@@ -90,17 +35,6 @@ pipeline {
             }
         }
 
-        stage("Deployment AYBS Player"){
-            when {
-                branch 'release/aybs_player*'
-            }
-            steps {
-                script {
-                    env.IMAGE_NAME = "ybs_aybs_player"
-                    env.NGINX_PORT = "7077"
-                }
-            }
-        }
 
         stage ("Printing Environments..") {
             steps{
