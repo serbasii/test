@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-      	DOCKER_REGISTRY = "http://prod:5000/v2"
+      	DOCKER_REGISTRY = "http://registry:5000/v2"
         PROD_USERNAME = "user"
-        PROD_IP = "2.12.100.66"
+        PROD_IP = "vlu16dc1"
     }
 
     stages {
@@ -61,7 +61,7 @@ pipeline {
             }
         }
 
-        stage("Deployment") {
+     /*   stage("Deployment") {
             when {
                 expression {
                     env.BRANCH_NAME.contains("release");
@@ -69,8 +69,9 @@ pipeline {
             }
             steps {
                 sh "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ${PROD_USERNAME}@${PROD_IP} 'cd /opt/docker && docker-compose up -d --build ${IMAGE_NAME}'";
+			  # sh "sshpass -p "123456a" ssh user@2.12.100.66 -t "cd /opt/docker; /bin/bash" && docker-compose up -d --build ${IMAGE_NAME}'";
             }
         }
-
+   */
     }
 }
