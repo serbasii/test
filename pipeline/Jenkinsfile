@@ -9,19 +9,6 @@ pipeline {
 
     stages {
 
-
-
-        stage("Deployment Double Vision"){
-            when {
-                branch 'release/doublevision*'
-            }
-            steps {
-                script {
-                    env.IMAGE_NAME = "ybs_doublevision"
-                    env.NGINX_PORT = "7075"
-                }
-            }
-        }
       
         stage("Deployment AYBS Web"){
             when {
@@ -47,7 +34,7 @@ pipeline {
         stage("Push to Private Registry") {
             when {
                 expression {
-                    env.BRANCH_NAME.contains("release");
+                    env.BRANCH_NAME.contains("master");
                 }
             }
             steps {
