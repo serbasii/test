@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-      	DOCKER_REGISTRY = "http://2.12.100.66:5000/v2"
+      	DOCKER_REGISTRY = "http://registry:5000/v2"
         PROD_USERNAME = "user"
         PROD_IP = "vlu16dc1"
     }
