@@ -9,7 +9,6 @@
 ![Image of Capture](assets/message.png)
 
 ## Send Message Details
-
 ```
 AMQP/MQTT/STOMP/
 +TOPICS=eshot/device_id
