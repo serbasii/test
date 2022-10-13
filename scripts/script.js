@@ -17,10 +17,7 @@ var isDev = null;
 jQuery(function () {
   // get url parameters
 
-
-  
-
-  var params = getUrlVars();
+ var params = getUrlVars();
   $.get({ url: "appsettings.json", cache: true })
     .done(function (res) {
       settings = res;
