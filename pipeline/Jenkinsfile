@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-      	DOCKER_REGISTRY = "http://prod:5000/v2"
+      	DOCKER_REGISTRY = "http://2.12.100.10:5000/v2"
         PROD_USERNAME = "user"
-        PROD_IP = "prod"
+        PROD_IP = "2.12.100.10"
     }
 
     stages {
@@ -16,8 +16,8 @@ pipeline {
             }
             steps {
                 script {
-                    env.IMAGE_NAME = "ybs_aybs_web"
-                    env.NGINX_PORT = "7076"
+                    env.IMAGE_NAME = "ybs_aybs_web_test"
+                    env.NGINX_PORT = "1235"
                 }
             }
         }
@@ -47,7 +47,7 @@ pipeline {
                 }
             }
         }
-        
+
      /*   stage("Deployment") {
             when {
                 expression {
