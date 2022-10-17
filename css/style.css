@@ -39,6 +39,7 @@ body {
   font-weight: bold;
   overflow: hidden;
   line-height: 1.6;
+  /* margin-top: 2200px; */
 }
 
 .container {
@@ -560,21 +561,23 @@ body {
 }
 .arrow-top,
 .arrow-bottom {
-  background-color: #DFDFDE;
+  background-color: #dfdfde;
   height: 6px;
   left: -5px;
   position: absolute;
   top: 50%;
   width: 100%;
+  cursor: pointer;
 }
 .arrow-top:after,
 .arrow-bottom:after {
-  background-color: #DFDFDE;
+  background-color: #dfdfde;
   content: "";
   height: 100%;
   position: absolute;
   top: 0;
   transition: all 0.15s;
+  cursor: pointer;
 }
 .arrow-top {
   transform: rotate(45deg);
@@ -664,10 +667,10 @@ button span:nth-child(4) {
 .select {
   position: relative;
   display: flex;
-  width: 20em;
+  width: 18em;
   height: 4em;
   border-radius: 0.25em;
   overflow: hidden;
-  margin-left: 11%;
+  margin-left: 10%;
   margin-bottom: 1.5em;
 }

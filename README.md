@@ -1,14 +1,15 @@
 # Açılış Ekranı
 
-![Image of Capture](assets/aybs_screen.png)
+![Image of Capture](assets/images/screen_open.png)
 
 # Otobüs Ekran Çalışması
 
-![Image of Capture](assets/aybs-screen.png)
+![Image of Capture](assets/images/screen.png)
 
-![Image of Capture](assets/message.png)
+![Image of Capture](assets/images/message.png)
 
 ## Send Message Details
+
 ```
 AMQP/MQTT/STOMP/
 +TOPICS=eshot/device_id

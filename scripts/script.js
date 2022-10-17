@@ -13,28 +13,42 @@ var interval = null;
 var firstMsgFromWs = true;
 var temp = null;
 var isDev = null;
+var isSelectFull = true;
 
+function checkParamsFromUrl() {
+  var params = getUrlVars();
+
+  // search plate using query parameters
+  if (params["device"]) {
+    var deviceNo = params["device"]; // settings.deviceId = default value
+
+    // console.log(deviceNo); // string=DB6457
+    // console.log(deviceNo.substring(0, 2)); // 35
+
+    if (deviceNo.substring(0, 2) != "35") {
+      document.getElementById("select-search").value = "35" + deviceNo;
+    } else {
+      document.getElementById("select-search").value = deviceNo;
+    }
+    LoadPlate();
+    isSelectFull = false;
+
+    setTimeout(function () {
+      WatchBus();
+    }, 500);
+
+    settings.deviceId = deviceNo;
+  }
+}
 jQuery(function () {
-  // get url parameters
-
-  
- var params = getUrlVars();
   $.get({ url: "appsettings.json", cache: true })
     .done(function (res) {
       settings = res;
       isDev = settings.isDev;
-
-      if (params["device"]) {
-        deviceNo = params["device"]; // settings.deviceId = default value
-
-        if (deviceNo.length < 10) {
-          document.getElementById("select-search").value = "35" + deviceNo;
-          LoadPlate();
-          setInterval(() => {
-            WatchBus();
-          }, 500);
-        }
-        settings.deviceId = deviceNo;
+      if (isDev == true) {
+        $(".loading").css("display", "none");
+        menuShow();
+        checkParamsFromUrl();
       }
 
       $("#version").append("<span>" + "v " + settings.version + "</span>");
@@ -129,9 +143,11 @@ function decode(encoded) {
   return points;
 }
 
+var client = null;
+
 function connectStomp() {
   var url = settings.stomp.uriWs;
-  var client = Stomp.client(url);
+  client = Stomp.client(url);
   client.debug = null;
   client.reconnect_delay = 5000;
   // console.log(client);
@@ -155,6 +171,8 @@ function connectStomp() {
   };
   function connectCallback() {
     var subscription = client.subscribe(
+      // "/topic/c2m.stream.E219742001010213",
+
       "/topic/c2m.stream." + settings.deviceId,
       onMessage,
       {
@@ -216,7 +234,7 @@ var onMessage = function (msg) {
     if (isDev === true) console.log(MsgObj);
   } else {
     MsgObj = JSON.parse(msg.data.trim());
-    // console.log(MsgObj);
+    if (isDev === true) console.log(MsgObj);
   }
 
   if (MsgObj) {
@@ -254,7 +272,7 @@ var checkMessageType = function (msg) {
   // if (busMarker) map.removeLayer(busMarker);
   switch (type) {
     case "transition":
-      setLocalStorageObj("transitionMsg", msg);
+      if (!firstMsgFromWs) setLocalStorageObj("transitionMsg", msg);
 
       // on dev environment
       if (isDev === true) {
@@ -683,8 +701,7 @@ var removeLocalStorageObj = function (key) {
   localStorage.removeItem(key);
 };
 
-var isSelectFull = true;
-var isButtonShow = false;
+// var isButtonShow = false;
 
 function arrowShow() {
   if (isDev === false) return;
@@ -714,6 +731,7 @@ function menuShow() {
   isMenuShow = !isMenuShow;
 }
 
+//closing menu with ESC
 window.onkeyup = function (event) {
   if (event.keyCode === 27) {
     document.querySelector(".menu").style.display = "none";
@@ -721,6 +739,14 @@ window.onkeyup = function (event) {
     document.querySelector(".arrow").style.left = "8%";
   }
 };
+
+//closing menu with mouse click
+function printMousePos(event) {
+  if (event.clientX > 230) {
+    if (isMenuShow == true) menuShow();
+  }
+}
+document.addEventListener("click", printMousePos);
 
 function LoadPlate() {
   $.get({
@@ -735,7 +761,7 @@ function LoadPlate() {
         $("#plate-select").append(
           "<option value='" +
             bus._id +
-            "' data-value='" +
+            "'data-value='" +
             bus.hostname +
             "'></option>"
         );
@@ -748,13 +774,23 @@ function LoadPlate() {
     });
 }
 
+//search plate using dropdown menu
 function WatchBus() {
   removeLocalStorageObj("locationMsg");
   removeLocalStorageObj("locationMsgEx");
   removeLocalStorageObj("transitionMsg");
+  firstMsgFromWs = true;
+  // window.location.href =
+  //   "/?device=" + getDataListSelectedOption("select-search", "plate-select");
+  client.disconnect();
+  $(".loading").css("display", "block");
 
-  window.location.href =
-    "/?device=" + getDataListSelectedOption("select-search", "plate-select");
+  settings.deviceId = getDataListSelectedOption(
+    "select-search",
+    "plate-select"
+  );
+
+  connectStomp();
 }
 
 function clearStorage() {
@@ -765,17 +801,15 @@ function clearStorage() {
 }
 
 function getDataListSelectedOption(txt_input, data_list_options) {
-  var shownVal = document.getElementById(txt_input).value;
-  var value2send = document.querySelector(
-    "#" + data_list_options + " option[value='" + shownVal + "']"
-  ).dataset.value;
-  return value2send;
-}
+  try {
+    var shownVal = document.getElementById(txt_input).value;
 
-function printMousePos(event) {
-  if (event.clientX > 230) {
-    if (isMenuShow == true) menuShow();
+    var value2send = document.querySelector(
+      "#" + data_list_options + " option[value='" + shownVal + "']"
+    ).dataset.value;
+    return value2send;
+  } catch {
+    window.alert("Plate is not found!");
+    $(".loading").css("display", "none");
   }
 }
-
-document.addEventListener("click", printMousePos);
