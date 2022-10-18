@@ -38,10 +38,10 @@ pipeline {
             steps {
                 script {
                     dockerImage = docker.build("${IMAGE_NAME}:${BUILD_NUMBER}", "--build-arg NGINX_PORT=${NGINX_PORT} .")
-                    docker.withRegistry("${DOCKER_REGISTRY}") {
+                   /* docker.withRegistry("${DOCKER_REGISTRY}") {
                     	dockerImage.push("$BUILD_NUMBER")
                     /*	dockerImage.push("latest") */
-                    }
+                    } */
                 }
             }
         }
