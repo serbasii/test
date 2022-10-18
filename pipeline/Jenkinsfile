@@ -15,7 +15,7 @@ pipeline {
             }
             steps {
                 script {
-                    env.IMAGE_NAME = "ybs_aybs_test"
+                    env.IMAGE_NAME = "aybs_test"
                     env.NGINX_PORT = "17076"
                 }
             }
@@ -40,7 +40,7 @@ pipeline {
                     dockerImage = docker.build("${IMAGE_NAME}:${BUILD_NUMBER}", "--build-arg NGINX_PORT=${NGINX_PORT} .")
                     docker.withRegistry("${DOCKER_REGISTRY}") {
                     	dockerImage.push("$BUILD_NUMBER")
-                    	dockerImage.push("latest")
+                    /*	dockerImage.push("latest") */
                     }
                 }
             }
@@ -54,7 +54,7 @@ pipeline {
             }
             steps {
                 /*sh "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ${PROD_USERNAME}@${PROD_IP} 'cd /home/svrn/eshot_mgmt && docker-compose up -d --build ${IMAGE_NAME}'";*/
-                sh "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ${PROD_USERNAME}@${PROD_IP} 'docker run -d --network vNet_eshot -p ${NGINX_PORT}:80 ${IMAGE_NAME}'";
+                sh "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ${PROD_USERNAME}@${PROD_IP} 'docker run -d --network eshot_mgmt_vNet_eshot -p ${NGINX_PORT}:80 ${IMAGE_NAME}:${BUILD_NUMBER}'";
             }
         }
 
