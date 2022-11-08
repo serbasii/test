@@ -6,8 +6,6 @@
 
 ![Image of Capture](assets/images/screen.png)
 
-![Image of Capture](assets/images/message.png)
-
 ## Send Message Details
 
 ```

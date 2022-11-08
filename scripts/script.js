@@ -225,15 +225,64 @@ function connectWS() {
     // console.log("web socket connected...waiting for unreal to say hello.");
   };
 }
+function convertData(msg) {
+  var x = {
+    _type: "",
+    weather: {
+      Icon: "",
+      temp: "",
+    },
+    date: "",
+    lon: 0,
+    lat: 0,
+    direction: "",
+    current_stop: 0,
+    plaka: "",
+    hat: "",
+    hatno: 0,
+    sofor: "",
+    data_date: "",
+    gpsNodeRedTime: 0,
+    m2cGPSSendTime: 0,
+    update: "",
+  };
+
+  //coverting obj to array
+  var arr = msg.split(",");
+  console.log(arr);
+
+  x._type = arr[0];
+  x.weather.Icon = arr[1];
+  x.weather.temp = arr[2];
+  x.date = arr[3];
+  x.lon = arr[4];
+  x.lat = arr[5];
+  x.direction = arr[6];
+  x.current_stop = arr[7];
+  x.plaka = arr[8];
+  x.hat = arr[9];
+  x.hatno = arr[10];
+  x.sofor = arr[11];
+  x.gpsNodeRedTime = arr[12];
+  x.m2cGPSSendTime = arr[13];
+  x.update = arr[14];
+
+  MsgObj = x;
+}
 
 var onMessage = function (msg) {
   $(".loading").css("display", "none");
+
   //STOMP must include body of message
   if (msg.body) {
     MsgObj = JSON.parse(msg.body.trim());
     if (isDev === true) console.log(MsgObj);
-  } else {
-    MsgObj = JSON.parse(msg.data.trim());
+  }
+  //Websocket msut include data of message
+  else {
+    console.log(msg.data);
+    convertData(msg.data);
+    // MsgObj = JSON.parse(msg.data.trim());
     if (isDev === true) console.log(MsgObj);
   }
 
@@ -436,15 +485,15 @@ var initStops = function () {
       opacity: "0",
     });
   }
-  if (nextElem.text().length > 40) {
-    nextElem.css({
-      "font-size": "4rem",
-    });
-  } else {
-    // nextElem.css({
-    //     'font-size': '5rem'
-    // })
-  }
+  // if (nextElem.text().length > 40) {
+  //   nextElem.css({
+  //     "font-size": "4rem",
+  //   });
+  // } else {
+  //   // nextElem.css({
+  //   //     'font-size': '5rem'
+  //   // })
+  // }
   if (MsgObj) {
     for (var index = strt; index <= endIndex; index++) {
       const stop = data[index];
@@ -531,11 +580,15 @@ var initFeatures = function () {
 
   initMap();
 
-  $.get({
+  //Getting Polyline data
+  $.ajax({
+    method: "GET",
     url: settings.map.routes,
+    data: {
+      routeNo: route_no,
+    },
     cache: true,
     dataType: "json",
-    contentType: "application/json",
   })
     .done(function (result) {
       $("#route_no").text(route_no);
@@ -564,11 +617,15 @@ var initFeatures = function () {
       // console.log(err);
     });
 
-  $.get({
+  //Getting route name and stops
+  $.ajax({
+    method: "GET",
     url: settings.map.routes_stop,
+    data: {
+      routeNo: route_no,
+    },
     cache: true,
     dataType: "json",
-    contentType: "application/json",
   })
     .done(function (result) {
       $("#route_name").text(result[route_no].name);
@@ -801,15 +858,13 @@ function clearStorage() {
 }
 
 function getDataListSelectedOption(txt_input, data_list_options) {
-  try {
-    var shownVal = document.getElementById(txt_input).value;
-
-    var value2send = document.querySelector(
-      "#" + data_list_options + " option[value='" + shownVal + "']"
-    ).dataset.value;
-    return value2send;
-  } catch {
-    window.alert("Plate is not found!");
+  var shownVal = document.getElementById(txt_input).value;
+  var value2send = document.querySelector(
+    "#" + data_list_options + " option[value='" + shownVal + "']"
+  );
+  if (value2send) return value2send.dataset.value;
+  else {
+    alert("Plate is not found!");
     $(".loading").css("display", "none");
   }
 }
