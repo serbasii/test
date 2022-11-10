@@ -226,30 +226,27 @@ function connectWS() {
   };
 }
 function convertData(msg) {
-  var arr = JSON.parse(msg).data.split(",");
+  if (msg._type == "transition") {
+    return msg;
+  }
+  var arr = msg.d.split(";");
   var x = {
-    _type: arr[0],
+    _type: msg._type,
     weather: {
-      Icon: arr[1],
-      temp: arr[2],
+      Icon: arr[0],
+      temp: arr[1],
     },
-    date: arr[3],
-    lon: arr[4],
-    lat: arr[5],
-    direction: arr[6],
-    current_stop: arr[7],
-    plaka: arr[8],
-    hat: arr[9],
-    hatno: arr[10],
-    sofor: arr[11],
-    data_date: arr[12],
-    gpsNodeRedTime: arr[13],
-    m2cGPSSendTime: arr[14],
-    update: arr[15],
+    date: arr[2],
+    lon: arr[3],
+    lat: arr[4],
+    direction: arr[5],
+    current_stop: arr[6],
+    plaka: msg.plaka,
+    hat: arr[7],
+    hatno: arr[8],
   };
-  // console.log(msg);
-  //coverting obj to array
-  MsgObj = x;
+  // console.log(x);
+  return x;
 }
 
 var onMessage = function (msg) {
@@ -263,8 +260,7 @@ var onMessage = function (msg) {
   //Websocket msut include data of message
   else {
     console.log(msg.data);
-    convertData(msg.data.trim());
-    // MsgObj = JSON.parse(msg.data.trim());
+    MsgObj = convertData(JSON.parse(msg.data.trim()));
     // if (isDev === true) console.log(MsgObj);
   }
 
@@ -298,7 +294,6 @@ var onMessage = function (msg) {
 };
 
 var checkMessageType = function (msg) {
-  MsgObj = msg;
   var type = msg._type;
   // if (busMarker) map.removeLayer(busMarker);
   switch (type) {
