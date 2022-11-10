@@ -226,47 +226,29 @@ function connectWS() {
   };
 }
 function convertData(msg) {
+  var arr = JSON.parse(msg).data.split(",");
   var x = {
-    _type: "",
+    _type: arr[0],
     weather: {
-      Icon: "",
-      temp: "",
+      Icon: arr[1],
+      temp: arr[2],
     },
-    date: "",
-    lon: 0,
-    lat: 0,
-    direction: "",
-    current_stop: 0,
-    plaka: "",
-    hat: "",
-    hatno: 0,
-    sofor: "",
-    data_date: "",
-    gpsNodeRedTime: 0,
-    m2cGPSSendTime: 0,
-    update: "",
+    date: arr[3],
+    lon: arr[4],
+    lat: arr[5],
+    direction: arr[6],
+    current_stop: arr[7],
+    plaka: arr[8],
+    hat: arr[9],
+    hatno: arr[10],
+    sofor: arr[11],
+    data_date: arr[12],
+    gpsNodeRedTime: arr[13],
+    m2cGPSSendTime: arr[14],
+    update: arr[15],
   };
-
+  // console.log(msg);
   //coverting obj to array
-  var arr = msg.split(",");
-  console.log(arr);
-
-  x._type = arr[0];
-  x.weather.Icon = arr[1];
-  x.weather.temp = arr[2];
-  x.date = arr[3];
-  x.lon = arr[4];
-  x.lat = arr[5];
-  x.direction = arr[6];
-  x.current_stop = arr[7];
-  x.plaka = arr[8];
-  x.hat = arr[9];
-  x.hatno = arr[10];
-  x.sofor = arr[11];
-  x.gpsNodeRedTime = arr[12];
-  x.m2cGPSSendTime = arr[13];
-  x.update = arr[14];
-
   MsgObj = x;
 }
 
@@ -281,9 +263,9 @@ var onMessage = function (msg) {
   //Websocket msut include data of message
   else {
     console.log(msg.data);
-    convertData(msg.data);
+    convertData(msg.data.trim());
     // MsgObj = JSON.parse(msg.data.trim());
-    if (isDev === true) console.log(MsgObj);
+    // if (isDev === true) console.log(MsgObj);
   }
 
   if (MsgObj) {
