@@ -68,6 +68,7 @@ jQuery(function () {
       }).setView([38.41885, 27.12872], 14); // default geographical center and zoom
 
       initMap();
+
       checkLocalStorageStatus();
     })
     .fail(function (err) {
@@ -90,6 +91,7 @@ function checkLocalStorageStatus() {
   //Son iki location bilgisi storage'de tutuluyor. Page refresh edildiğinde hatno direction kontrol ediliyor daha sonra transition mesajı dikkate alınıyor.
   //Cihaz üzerinde belirli periyotlarla widgetlar refresh edildiği için global değerler ile takip edebilmek mümkün olmadığından bu yöntem kullanılmıştır.
   if (locationMsgFromStorage) {
+    MsgObj=locationMsgFromStorage;
     checkMessageType(locationMsgFromStorage);
   }
   if (locationMsgFromStorage && exLocationMsgFromStorage) {
@@ -226,6 +228,7 @@ function connectWS() {
   };
 }
 function convertData(msg) {
+
   if (msg._type == "transition") {
     return msg;
   }
@@ -302,7 +305,7 @@ var checkMessageType = function (msg) {
 
       // on dev environment
       if (isDev === true) {
-        playAudio(msg.audioUrl.replace("10.0.25.22", "193.109.135.37"));
+        playAudio(msg.audioUrl.replace("10.0.25.22", "2.12.100.10"));
       } else {
         playAudio(msg.audioUrl); // on production
       }
@@ -310,6 +313,7 @@ var checkMessageType = function (msg) {
       break;
 
     case "location":
+    
       //Cihaz yeni açıldığında yada yenileme işlemi yapıldığında Websocket/Stomp'tan gelen ilk mesajı storage'e kaydediyoruz.
       checkFirstMessageFromWsWithStorageStatus(msg);
 
