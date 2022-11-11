@@ -12,71 +12,59 @@ var settings = null;
 var interval = null;
 
 jQuery(function () {
-$('#test').css("display","none");
-$.get({url:'appsettings.json',cache: true})
-        .done(function (res) {
-            settings = res;
-            connectWS();
-            
-        }).fail(function (err) {
-            console.log(err);
-        });
-    
-    
+  $("#test").css("display", "none");
+  $.get({ url: "appsettings.json", cache: true })
+    .done(function (res) {
+      settings = res;
+      connectWS();
+    })
+    .fail(function (err) {
+      console.log(err);
+    });
 });
 
 function connectWS() {
+  var connected = false;
+  var ws = new WebSocket(settings.websocket.ws_current);
+  ws.onmessage = onMessageWS;
 
-    var connected = false;
-    var ws = new WebSocket(settings.websocket.ws_current);
-    ws.onmessage = onMessageWS;
+  ws.onclose = function () {
+    console.log("socket closed");
+    ws = null;
+    setTimeout(function () {
+      connectWS();
+    }, 5000);
+  };
 
-    ws.onclose = function () {
-        console.log("socket closed");
-        ws = null;
-        setTimeout(function () {
-            connectWS();
-        }, 5000)
-    };
-
-
-    ws.onopen = function () {
-        console.log("web socket connected...waiting for unreal to say hello.");
-    };
+  ws.onopen = function () {
+    console.log("web socket connected...waiting for unreal to say hello.");
+  };
 }
 
 var onMessageWS = function (msg) {
-    console.log(msg);
-    if (msg.data) {
-        clearInterval(interval);
-        stompMsgObj = JSON.parse(msg.data.trim());
-        var type = stompMsgObj._type;
-         $(".current").text(stompMsgObj.current_txt);
-         $('#test').css("display","inherit");
-          $('#test').delay(10000).fadeOut();
-        // $('#test').delay(10000).css("display","none");
-        
-        switch (type) {
+  console.log(msg);
+  if (msg.data) {
+    clearInterval(interval);
+    stompMsgObj = JSON.parse(msg.data.trim());
+    var type = stompMsgObj._type;
+    $(".center").text(stompMsgObj.current_txt);
+    $("#test").css("display", "inherit");
+    $("#test").delay(10000).fadeOut();
+    // $('#test').delay(10000).css("display","none");
 
-            case "transition":
-                playAudio(stompMsgObj.audioUrl);
-                
-                
-                break;
-        }
+    switch (type) {
+      case "transition":
+        playAudio(stompMsgObj.audioUrl);
+
+        break;
     }
+  }
 };
 
 var playAudio = function (audioUrl) {
-    // chrome://settings/content/sound
-    if (audioUrl) {
-        var audio = new Audio(audioUrl);
-        audio.play();
-    }
-}
-
-
-
-
-
-
+  // chrome://settings/content/sound
+  if (audioUrl) {
+    var audio = new Audio(audioUrl);
+    audio.play();
+  }
+};

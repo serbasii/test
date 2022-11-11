@@ -532,12 +532,12 @@ var initMap = function () {
 
   //path içinde tanımlı tiles varsa, xyz alacak
   if (settings.map.tilePath.indexOf("QTiles") > -1) {
-    L.tileLayer(settings.map.tilePath, {
-      // maxZoom: settings.map.maxZoom,
-      // minZoom: settings.map.minZoom,
-      // tms: false,
-      // attribution: '.'
-    }).addTo(map);
+    // L.tileLayer(settings.map.tilePath, {
+      // // maxZoom: settings.map.maxZoom,
+      // // minZoom: settings.map.minZoom,
+      // // tms: false,
+      // // attribution: '.'
+    // }).addTo(map);
   } else {
     // yoksa large image alacak
 
